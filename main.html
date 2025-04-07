@@ -7,25 +7,22 @@
   <style>
     table {
       width: 60%;
-      margin: 40px auto;
       border-collapse: collapse;
-      font-family: Arial, sans-serif;
+      margin: 20px auto;
     }
     th, td {
-      padding: 12px;
       border: 1px solid #ccc;
-      text-align: left;
+      padding: 10px;
+      text-align: center;
     }
-    th {
-      background-color: #f4f4f4;
-    }
-    .total-row {
-      font-weight: bold;
-      background-color: #e0ffe0;
+    .price {
+      background-color: #f9f9f9;
     }
   </style>
 </head>
 <body>
+
+  <h1 style="text-align:center;">Grofers Checkout</h1>
 
   <table id="grocery-table">
     <thead>
@@ -37,41 +34,60 @@
     <tbody>
       <tr class="item">
         <td>Apples</td>
-        <td class="prices">120</td>
+        <td class="price" contenteditable="true">20</td>
       </tr>
       <tr class="item">
-        <td>Bananas</td>
-        <td class="prices">60</td>
+        <td>Bread</td>
+        <td class="price" contenteditable="true">33</td>
       </tr>
       <tr class="item">
         <td>Milk</td>
-        <td class="prices">55</td>
+        <td class="price" contenteditable="true">0</td>
       </tr>
-      <!-- Add more items if needed -->
+      <tr class="item">
+        <td>Eggs</td>
+        <td class="price" contenteditable="true">70</td>
+      </tr>
+      <tr class="item">
+        <td>Rice</td>
+        <td class="price" contenteditable="true">210</td>
+      </tr>
     </tbody>
   </table>
 
+  <div style="text-align:center;">
+    <button onclick="calculateTotal()">Calculate Total</button>
+  </div>
+
   <script>
-    // Select all price elements
-    const prices = document.querySelectorAll(".prices");
-    let total = 0;
+    function calculateTotal() {
+      const prices = document.querySelectorAll('.price');
+      let total = 0;
 
-    prices.forEach(priceEl => {
-      total += parseFloat(priceEl.textContent);
-    });
+      prices.forEach(cell => {
+        const value = parseFloat(cell.textContent.trim());
+        if (!isNaN(value)) {
+          total += value;
+        }
+      });
 
-    // Create new row and cell for total
-    const totalRow = document.createElement("tr");
-    totalRow.className = "total-row";
+      // Remove existing total row if any
+      const oldRow = document.getElementById('ans');
+      if (oldRow) {
+        oldRow.remove();
+      }
 
-    const totalCell = document.createElement("td");
-    totalCell.colSpan = 2; // span across both columns
-    totalCell.textContent = `Total Price: ₹${total}`;
+      // Create new row
+      const row = document.createElement('tr');
+      row.id = 'ans';
+      const cell = document.createElement('td');
+      cell.colSpan = 2;
+      cell.style.fontWeight = "bold";
+      cell.textContent = `Total: ₹${total}`;
+      row.appendChild(cell);
 
-    totalRow.appendChild(totalCell);
-
-    // Append total row to the table
-    document.querySelector("#grocery-table tbody").appendChild(totalRow);
+      document.querySelector('#grocery-table tbody').appendChild(row);
+    }
   </script>
 
 </body>
