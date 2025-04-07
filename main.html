@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Grofers Checkout</title>
   <style>
     table {
-      width: 60%;
-      border-collapse: collapse;
+      width: 50%;
       margin: 20px auto;
+      border-collapse: collapse;
     }
     th, td {
+      padding: 12px;
       border: 1px solid #ccc;
-      padding: 10px;
       text-align: center;
     }
     .price {
       background-color: #f9f9f9;
     }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
 
-  <h1 style="text-align:center;">Grofers Checkout</h1>
+  <h1 style="text-align: center;">Grofers Checkout</h1>
 
   <table id="grocery-table">
     <thead>
@@ -34,30 +39,28 @@
     <tbody>
       <tr class="item">
         <td>Apples</td>
-        <td class="price" contenteditable="true">20</td>
+        <td class="price" contenteditable="true">0</td>
       </tr>
       <tr class="item">
-        <td>Bread</td>
-        <td class="price" contenteditable="true">33</td>
+        <td>Bananas</td>
+        <td class="price" contenteditable="true">0</td>
       </tr>
       <tr class="item">
         <td>Milk</td>
         <td class="price" contenteditable="true">0</td>
       </tr>
       <tr class="item">
-        <td>Eggs</td>
-        <td class="price" contenteditable="true">70</td>
+        <td>Rice</td>
+        <td class="price" contenteditable="true">0</td>
       </tr>
       <tr class="item">
-        <td>Rice</td>
-        <td class="price" contenteditable="true">210</td>
+        <td>Biscuits</td>
+        <td class="price" contenteditable="true">0</td>
       </tr>
     </tbody>
   </table>
 
-  <div style="text-align:center;">
-    <button onclick="calculateTotal()">Calculate Total</button>
-  </div>
+  <button onclick="calculateTotal()">Calculate Total</button>
 
   <script>
     function calculateTotal() {
@@ -65,25 +68,20 @@
       let total = 0;
 
       prices.forEach(cell => {
-        const value = parseFloat(cell.textContent.trim());
+        const value = parseFloat(cell.textContent.trim().replace(/[^\d.]/g, ''));
         if (!isNaN(value)) {
           total += value;
         }
       });
 
-      // Remove existing total row if any
       const oldRow = document.getElementById('ans');
-      if (oldRow) {
-        oldRow.remove();
-      }
+      if (oldRow) oldRow.remove();
 
-      // Create new row
       const row = document.createElement('tr');
       row.id = 'ans';
       const cell = document.createElement('td');
       cell.colSpan = 2;
-      cell.style.fontWeight = "bold";
-      cell.textContent = `Total: ₹${total}`;
+      cell.textContent = total;
       row.appendChild(cell);
 
       document.querySelector('#grocery-table tbody').appendChild(row);
